@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+    <div>
+      <h2>Accounts</h2>
+      <div class="small">Clients list</div>
+    </div>
+    <a class="btn" href="/accounts/new">New account</a>
+  </div>
+  <table class="table" style="margin-top:12px">
+    <thead><tr><th>Name</th><th>Industry</th><th>Country</th></tr></thead>
+    <tbody>
+    {% for a in accounts %}
+      <tr>
+        <td><a href="/accounts/{{a.id}}">{{a.name}}</a></td>
+        <td class="small">{{a.industry or "-"}}</td>
+        <td class="small">{{a.country or "-"}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card" style="max-width:720px">
+  <h2>New Account</h2>
+  <form method="post" action="/accounts/new" class="grid" style="margin-top:12px">
+    <div>
+      <label class="small">Name</label>
+      <input name="name" placeholder="Company / Client name" required />
+    </div>
+    <div class="row">
+      <div>
+        <label class="small">Industry</label>
+        <input name="industry" placeholder="e.g., Real Estate" />
+      </div>
+      <div>
+        <label class="small">Size</label>
+        <input name="size" placeholder="SME / Mid / Enterprise" />
+      </div>
+      <div>
+        <label class="small">Country</label>
+        <input name="country" placeholder="Egypt" />
+      </div>
+    </div>
+    <div class="footer-actions">
+      <button class="btn" type="submit">Create</button>
+      <a class="btn secondary" href="/accounts">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

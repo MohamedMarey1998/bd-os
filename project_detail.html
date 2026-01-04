@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div>
+      <h2>{{ pr.name }}</h2>
+      <div class="small">{{ pr.account.name }} • {{ pr.status }} • {{ pr.package or "-" }}</div>
+    </div>
+    <div class="footer-actions">
+      <a class="btn secondary" href="/accounts/{{pr.account_id}}">Account</a>
+      <a class="btn" href="/projects/{{pr.id}}/tasks">Tasks</a>
+      <a class="btn" href="/projects/{{pr.id}}/opportunities">Opportunities</a>
+    </div>
+  </div>
+
+  <div style="margin-top:14px">
+    <div class="small">Progress: {{ progress }}%</div>
+    <div class="progress"><div style="width:{{progress}}%"></div></div>
+  </div>
+
+  <h3 style="margin-top:16px">12 Stages</h3>
+  <table class="table">
+    <thead><tr><th>#</th><th>Stage</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for s in stages %}
+      <tr>
+        <td class="small">{{ s.stage.order }}</td>
+        <td>{{ s.stage.name }}</td>
+        <td><span class="badge {% if s.status=='done' %}ok{% elif s.status=='blocked' %}danger{% else %}warn{% endif %}">{{ s.status }}</span></td>
+        <td><a class="btn secondary" href="/projects/{{pr.id}}/stage/{{s.id}}">Open</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="grid grid-2" style="margin-top:14px">
+  <div class="card">
+    <h3>Recent Tasks</h3>
+    <table class="table">
+      <thead><tr><th>Title</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for t in tasks %}
+        <tr><td class="small">{{t.title}}</td><td><span class="badge">{{t.status}}</span></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Recent Opportunities</h3>
+    <table class="table">
+      <thead><tr><th>Title</th><th>Stage</th></tr></thead>
+      <tbody>
+      {% for o in opps %}
+        <tr><td class="small">{{o.title}}</td><td><span class="badge">{{o.stage}}</span></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

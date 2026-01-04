@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div>
+      <h2>Tasks</h2>
+      <div class="small">{{ pr.name }}</div>
+    </div>
+    <div class="footer-actions">
+      <a class="btn secondary" href="/projects/{{pr.id}}">Back</a>
+    </div>
+  </div>
+
+  <form method="post" action="/projects/{{pr.id}}/tasks/new" class="grid" style="margin-top:12px">
+    <div class="row">
+      <div style="flex:2">
+        <label class="small">Title</label>
+        <input name="title" placeholder="Next action..." required />
+      </div>
+      <div>
+        <label class="small">Stage</label>
+        <select name="project_stage_id">
+          <option value="0">None</option>
+          {% for s in stages %}
+            <option value="{{s.id}}">{{ s.stage_id }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label class="small">Priority</label>
+        <select name="priority">
+          <option value="low">low</option>
+          <option value="med" selected>med</option>
+          <option value="high">high</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" type="submit">Add task</button>
+  </form>
+
+  <table class="table" style="margin-top:12px">
+    <thead><tr><th>Title</th><th>Status</th><th>Priority</th><th>Set</th></tr></thead>
+    <tbody>
+    {% for t in tasks %}
+      <tr>
+        <td>{{ t.title }}</td>
+        <td><span class="badge">{{ t.status }}</span></td>
+        <td class="small">{{ t.priority }}</td>
+        <td>
+          <form method="post" action="/tasks/{{t.id}}/set" style="display:flex; gap:8px">
+            <input type="hidden" name="status" value="todo" />
+            <button class="btn secondary" type="submit">todo</button>
+          </form>
+          <form method="post" action="/tasks/{{t.id}}/set" style="display:flex; gap:8px; margin-top:6px">
+            <input type="hidden" name="status" value="doing" />
+            <button class="btn secondary" type="submit">doing</button>
+          </form>
+          <form method="post" action="/tasks/{{t.id}}/set" style="display:flex; gap:8px; margin-top:6px">
+            <input type="hidden" name="status" value="done" />
+            <button class="btn secondary" type="submit">done</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

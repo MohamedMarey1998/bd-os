@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid grid-2">
+  <div class="card">
+    <h2>{{ acc.name }}</h2>
+    <div class="small">{{ acc.industry or "-" }} • {{ acc.country or "-" }}</div>
+    <div class="footer-actions" style="margin-top:12px">
+      <a class="btn" href="/projects/new/{{acc.id}}">New project</a>
+      <a class="btn secondary" href="/accounts">Back</a>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Projects</h3>
+    <table class="table">
+      <thead><tr><th>Name</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for p in projects %}
+        <tr>
+          <td><a href="/projects/{{p.id}}">{{p.name}}</a></td>
+          <td><span class="badge">{{p.status}}</span></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

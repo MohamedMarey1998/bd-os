@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div>
+      <h2>Opportunities</h2>
+      <div class="small">{{ pr.name }}</div>
+    </div>
+    <div class="footer-actions">
+      <a class="btn secondary" href="/projects/{{pr.id}}">Back</a>
+    </div>
+  </div>
+
+  <form method="post" action="/projects/{{pr.id}}/opportunities/new" class="grid" style="margin-top:12px">
+    <div>
+      <label class="small">Title</label>
+      <input name="title" placeholder="Partner / Channel / Deal" required />
+    </div>
+    <div class="row">
+      <div>
+        <label class="small">Type</label>
+        <select name="otype">
+          <option value="partnership">partnership</option>
+          <option value="channel">channel</option>
+          <option value="deal">deal</option>
+        </select>
+      </div>
+      <div>
+        <label class="small">Value estimate</label>
+        <input name="value_estimate" placeholder="EGP" />
+      </div>
+      <div>
+        <label class="small">Probability</label>
+        <input name="probability" placeholder="0-100" />
+      </div>
+    </div>
+    <div>
+      <label class="small">Notes</label>
+      <textarea name="notes" placeholder="Context / next step"></textarea>
+    </div>
+    <button class="btn" type="submit">Add opportunity</button>
+  </form>
+
+  <table class="table" style="margin-top:12px">
+    <thead><tr><th>Title</th><th>Type</th><th>Stage</th><th>Value</th><th>Prob</th></tr></thead>
+    <tbody>
+    {% for o in opps %}
+      <tr>
+        <td>{{ o.title }}</td>
+        <td class="small">{{ o.otype }}</td>
+        <td><span class="badge">{{ o.stage }}</span></td>
+        <td class="small">{{ o.value_estimate or "-" }}</td>
+        <td class="small">{{ o.probability or "-" }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

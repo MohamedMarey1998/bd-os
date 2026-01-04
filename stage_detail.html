@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid grid-2">
+  <div class="card">
+    <h2>{{ stage.name }}</h2>
+    <div class="small">Status: <span class="badge">{{ ps.status }}</span></div>
+
+    <h3 style="margin-top:14px">Checklist</h3>
+    <table class="table">
+      <thead><tr><th>Done</th><th>Item</th><th></th></tr></thead>
+      <tbody>
+      {% for c in checklist %}
+        <tr>
+          <td style="width:70px">
+            <form method="post" action="/projects/{{project_id}}/stage/{{ps.id}}/toggle">
+              <input type="hidden" name="cid" value="{{c.id}}" />
+              <button class="btn secondary" type="submit">{{ "✓" if c.done else " " }}</button>
+            </form>
+          </td>
+          <td>{{ c.item.text }}</td>
+          <td class="small">{{ c.done_at or "" }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Deliverables</h3>
+      {% for d in deliverables %}
+        <div style="margin:10px 0; padding:10px; border:1px solid rgba(255,255,255,.08); border-radius:14px; background:rgba(255,255,255,.03)">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+            <div>
+              <div style="font-weight:700">{{ d.deliverable.name }}</div>
+              <div class="small">Status: <span class="badge">{{ d.status }}</span></div>
+            </div>
+          </div>
+          <form method="post" action="/projects/{{project_id}}/stage/{{ps.id}}/deliverable" class="grid" style="margin-top:8px">
+            <input type="hidden" name="did" value="{{d.id}}" />
+            <textarea name="content" placeholder="Paste link / notes / summary">{{ d.content or "" }}</textarea>
+            <button class="btn secondary" type="submit">Save</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="card">
+      <h3>Approval Gate</h3>
+      <form method="post" action="/projects/{{project_id}}/stage/{{ps.id}}/approve" class="grid" style="margin-top:10px">
+        <div>
+          <label class="small">Decision</label>
+          <select name="decision">
+            <option value="approve">Approve (mark stage done)</option>
+            <option value="reject">Reject (mark stage blocked)</option>
+          </select>
+        </div>
+        <div>
+          <label class="small">Comment</label>
+          <textarea name="comment" placeholder="Why approve/reject?"></textarea>
+        </div>
+        <button class="btn" type="submit">Submit decision</button>
+        <a class="btn secondary" href="/projects/{{project_id}}">Back to project</a>
+      </form>
+
+      <h3 style="margin-top:14px">Approval history</h3>
+      <table class="table">
+        <thead><tr><th>Decision</th><th>Comment</th><th>At</th></tr></thead>
+        <tbody>
+        {% for a in approvals %}
+          <tr><td><span class="badge">{{a.decision}}</span></td><td class="small">{{a.comment or ""}}</td><td class="small">{{a.at}}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

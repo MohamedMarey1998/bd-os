@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid grid-2">
+  <div class="card">
+    <h2>Projects</h2>
+    <p class="small">Latest 25</p>
+    <table class="table">
+      <thead><tr><th>Name</th><th>Account</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for p in projects %}
+        <tr>
+          <td><a href="/projects/{{p.id}}">{{ p.name }}</a></td>
+          <td>{{ p.account.name }}</td>
+          <td><span class="badge">{{ p.status }}</span></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="kpi">
+        <div>
+          <h3>Overdue tasks</h3>
+          <div class="small">Across all active projects</div>
+        </div>
+        <div class="badge {% if overdue_tasks==0 %}ok{% else %}danger{% endif %}">{{ overdue_tasks }}</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Recent Accounts</h3>
+      <div class="footer-actions" style="margin:10px 0">
+        <a class="btn" href="/accounts/new">New account</a>
+      </div>
+      <table class="table">
+        <thead><tr><th>Name</th><th>Industry</th></tr></thead>
+        <tbody>
+        {% for a in accounts %}
+          <tr>
+            <td><a href="/accounts/{{a.id}}">{{a.name}}</a></td>
+            <td class="small">{{a.industry or "-"}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
